@@ -1,0 +1,34 @@
+import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+
+export function middleware(request) {
+  const token = request.cookies.get("token")?.value;
+
+  const { pathname } = request.nextUrl;
+
+  // Public routes
+  if (pathname === "/auth" || pathname === "/") {
+    return NextResponse.next();
+  }
+
+  // Protected routes
+  if (pathname.startsWith("/dashboard")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/auth", request.url));
+    }
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+
+      return NextResponse.next();
+    } catch {
+      return NextResponse.redirect(new URL("/auth", request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/dashboard/:path*"],
+};
