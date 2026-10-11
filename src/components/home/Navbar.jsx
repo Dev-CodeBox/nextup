@@ -5,31 +5,27 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-
 export default function Navbar() {
 
     const router = useRouter();
-    const [open,setOpen] = useState(false);
-
+    const [open, setOpen] = useState(false);
 
     const links = [
         {
-            name:"Home",
-            href:"/"
+            name: "Home",
+            href: "/"
         },
         {
-            name:"Features",
-            href:"#features"
+            name: "Features",
+            href: "#features"
         },
         {
-            name:"How it Works",
-            href:"#how"
+            name: "How it Works",
+            href: "#how"
         }
     ];
 
-
     return (
-
         <nav className="
             fixed
             top-0
@@ -40,8 +36,6 @@ export default function Navbar() {
             border-b
             border-gray-200
         ">
-
-
             <div className="
                 max-w-7xl
                 mx-auto
@@ -53,8 +47,6 @@ export default function Navbar() {
                 items-center
                 justify-between
             ">
-
-
                 <Link
                     href="/"
                     className="
@@ -66,21 +58,14 @@ export default function Navbar() {
                 >
                     NextUp
                 </Link>
-
-
-
-                {/* Desktop */}
-
                 <div className="
                     hidden
                     md:flex
                     items-center
                     gap-8
                 ">
-
-
                     {
-                        links.map((link)=>(
+                        links.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
@@ -94,10 +79,8 @@ export default function Navbar() {
                             </Link>
                         ))
                     }
-
-
                     <button
-                        onClick={()=>router.push("/auth")}
+                        onClick={() => router.push("/auth")}
                         className="
                         bg-[#0d3b82]
                         text-white
@@ -110,45 +93,23 @@ export default function Navbar() {
                     >
                         Get Started
                     </button>
-
-
                 </div>
-
-
-
-
-
-                {/* Mobile Button */}
-
                 <button
-                    onClick={()=>setOpen(!open)}
+                    onClick={() => setOpen(!open)}
                     className="
                     md:hidden
                     text-[#0d3b82]
                     "
                 >
-
                     {
                         open
-                        ?
-                        <X size={28}/>
-                        :
-                        <Menu size={28}/>
+                            ?
+                            <X size={28} />
+                            :
+                            <Menu size={28} />
                     }
-
-
                 </button>
-
-
             </div>
-
-
-
-
-
-
-            {/* Mobile Menu */}
-
             {
                 open && (
 
@@ -162,14 +123,13 @@ export default function Navbar() {
                         border-t
                         "
                     >
-
                         {
-                            links.map((link)=>(
+                            links.map((link) => (
 
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    onClick={()=>setOpen(false)}
+                                    onClick={() => setOpen(false)}
                                     className="
                                     block
                                     text-gray-700
@@ -180,11 +140,8 @@ export default function Navbar() {
 
                             ))
                         }
-
-
-
                         <button
-                            onClick={()=>router.push("/auth")}
+                            onClick={() => router.push("/auth")}
                             className="
                             w-full
                             bg-[#0d3b82]
@@ -195,15 +152,9 @@ export default function Navbar() {
                         >
                             Get Started
                         </button>
-
-
                     </div>
-
                 )
             }
-
-
         </nav>
-
     );
 }
