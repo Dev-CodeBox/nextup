@@ -47,7 +47,7 @@ export default function HowItWorks() {
             id="how"
             className="
                 py-14
-                sm:py-16
+                sm:py-24
                 bg-gray-50
             "
         >
