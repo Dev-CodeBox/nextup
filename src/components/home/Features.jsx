@@ -42,7 +42,7 @@ export default function Features() {
             id="features"
             className="
                 py-14
-                sm:py-16
+                sm:py-24
                 bg-white
             "
         >
