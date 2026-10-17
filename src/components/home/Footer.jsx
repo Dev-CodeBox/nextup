@@ -175,6 +175,7 @@ export default function Footer() {
                                 transition
                                 cursor-pointer
                             "
+                            href="https://www.linkedin.com/in/dev-in"
                         >
                             <FaLinkedin size={17} />
                         </a>
