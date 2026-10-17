@@ -192,6 +192,7 @@ export default function Footer() {
                                 transition
                                 cursor-pointer
                             "
+                            href="https://x.com/dev_tweetbot"
                         >
                             <FaTwitter size={17} />
                         </a>
