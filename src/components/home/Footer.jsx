@@ -157,6 +157,8 @@ export default function Footer() {
                                 transition
                                 cursor-pointer
                             "
+
+                            href="https://github.com/Dev-CodeBox"
                         >
                             <FaGithub size={17} />
                         </a>
