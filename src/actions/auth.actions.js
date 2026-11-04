@@ -14,8 +14,6 @@ export async function signupUser(formData) {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // Check existing user
-
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -25,11 +23,7 @@ export async function signupUser(formData) {
       };
     }
 
-    // Password hash
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create user
 
     const user = await User.create({
       name,
@@ -60,8 +54,6 @@ export async function loginUser(formData) {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // Find user
-
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -71,8 +63,6 @@ export async function loginUser(formData) {
       };
     }
 
-    // Compare password
-
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -81,8 +71,6 @@ export async function loginUser(formData) {
         message: "Invalid email or password",
       };
     }
-
-    // Create JWT
 
     const token = jwt.sign(
       {
@@ -94,8 +82,6 @@ export async function loginUser(formData) {
         expiresIn: "7d",
       },
     );
-
-    // Store token in cookie
 
     const cookieStore = await cookies();
 
@@ -117,9 +103,11 @@ export async function loginUser(formData) {
       role: user.role,
     };
   } catch (error) {
+    console.log("LOGIN ERROR:", error);
+
     return {
       success: false,
-      message: "Something went wrong",
+      message: error.message,
     };
   }
 }
