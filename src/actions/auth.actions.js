@@ -9,12 +9,28 @@ import jwt from "jsonwebtoken";
 export async function signupUser(formData) {
   try {
     await connectDB();
-
     const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
 
-    const existingUser = await User.findOne({ email });
+    if (!name || !email || !password || !confirmPassword) {
+      return {
+        success: false,
+        message: "All fields are required",
+      };
+    }
+
+    if (password !== confirmPassword) {
+      return {
+        success: false,
+        message: "Passwords do not match",
+      };
+    }
+
+    const existingUser = await User.findOne({
+      email,
+    });
 
     if (existingUser) {
       return {
@@ -24,7 +40,6 @@ export async function signupUser(formData) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = await User.create({
       name,
       email,
@@ -38,8 +53,7 @@ export async function signupUser(formData) {
       userId: user._id.toString(),
     };
   } catch (error) {
-    console.log("Signup Error:", error);
-
+    console.log("SIGNUP ERROR:", error);
     return {
       success: false,
       message: "Something went wrong",
@@ -54,7 +68,9 @@ export async function loginUser(formData) {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      email,
+    });
 
     if (!user) {
       return {
@@ -77,29 +93,35 @@ export async function loginUser(formData) {
         userId: user._id.toString(),
         role: user.role,
       },
+
       process.env.JWT_SECRET,
+
       {
         expiresIn: "7d",
       },
     );
 
-    const cookieStore = await cookies();
+    // IMPORTANT FOR NEXT 15/16
 
-    console.log("JWT Token:", token);
+    const cookieStore = await cookies();
 
     cookieStore.set("token", token, {
       httpOnly: true,
+
       secure: process.env.NODE_ENV === "production",
+
       sameSite: "lax",
+
       maxAge: 60 * 60 * 24 * 7,
+
       path: "/",
     });
 
-    console.log("Cookie Set Successfully");
-
     return {
       success: true,
+
       message: "Login successful",
+
       role: user.role,
     };
   } catch (error) {
@@ -107,6 +129,7 @@ export async function loginUser(formData) {
 
     return {
       success: false,
+
       message: error.message,
     };
   }
